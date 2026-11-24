@@ -17,8 +17,9 @@
   nav { display:flex; flex-direction:column; gap:6px; }
   nav button { background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; padding:10px 12px; border-radius:8px; cursor:pointer; text-align:left; font:inherit; }
   nav button[aria-pressed="true"] { background:var(--red); border-color:var(--red); font-weight:600; }
-  #instructor-stamp { margin-top:auto; display:flex; gap:8px; align-items:center; justify-content:center; background:#fff; border-radius:10px; padding:8px; min-height:60px; }
-  #instructor-stamp img { max-height:70px; max-width:100px; border-radius:6px; }
+  #instructor-stamp { margin-top:auto; position:relative; width:150px; height:150px; align-self:center; display:grid; place-items:center; background:#fff; border-radius:50%; }
+  #instructor-stamp .stamp-photo { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:82px; height:82px; border-radius:50%; object-fit:cover; }
+  #instructor-stamp .stamp-svg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
   #instructor-stamp .stamp-placeholder { color:var(--navy); font-size:.75rem; text-align:center; }
   #instructor-stamp.has-asset .stamp-placeholder { display:none; }
   main { flex:1; padding:28px; max-width:1000px; }
@@ -242,9 +243,10 @@
     btns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
   }));
 
-  function loadBrand(id, file, alt) {
+  function loadBrand(id, file, alt, cls) {
     const box = document.getElementById(id), img = new Image();
     img.alt = alt;
+    if (cls) img.className = cls;
     img.onload = () => {
       const ph = box.querySelector('.asset-placeholder, .stamp-placeholder');
       if (ph) ph.hidden = true;
@@ -254,8 +256,8 @@
     img.src = file;
   }
   loadBrand('school-logo', 'chisholm_logo.png', 'Chisholm school logo');
-  loadBrand('instructor-stamp', 'boehm_photo.jpg', 'Instructor photo');
-  loadBrand('instructor-stamp', 'boehm-stamp.svg', 'Classroom stamp');
+  loadBrand('instructor-stamp',   'boehm_photo.jpg', 'Instructor photo', 'stamp-photo');
+    loadBrand('instructor-stamp', 'boehm-stamp.svg', 'Classroom stamp', 'stamp-svg');
 
   const slides = [...document.querySelectorAll('.slide')];
   let i = 0;
